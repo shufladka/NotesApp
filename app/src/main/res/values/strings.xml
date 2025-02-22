@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">NotesApp</string>
+    <string name="toast_missing_content">Please enter Title and Content</string>
+    <string name="toast_error_creation_note">Please enter Title and Content</string>
+    <string name="toast_successful_creation_note">Note Saved</string>
+    <string name="toast_deleted_note">Note Deleted</string>
+    <string name="toast_changes_note">Changes Saved</string>
+</resources>
