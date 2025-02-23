@@ -23,8 +23,9 @@
         android:id="@+id/notesRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="50dp"
-        android:padding="8dp" />
+        android:layout_marginTop="56dp"
+        android:padding="8dp"
+        android:clipToPadding="false" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/sortButton"
@@ -32,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginBottom="90dp"
+        android:layout_marginBottom="80dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
@@ -40,14 +41,13 @@
         app:tint="@color/white"
         android:backgroundTint="@color/green" />
 
-    <!-- Выпадающее меню -->
     <LinearLayout
         android:id="@+id/dropdownMenu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@id/addButton"
         android:layout_alignEnd="@id/addButton"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="5dp"
         android:orientation="vertical"
         android:visibility="gone"
         android:elevation="40dp"

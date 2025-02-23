@@ -3,7 +3,9 @@ package by.bsuir.notesapp
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.content.Intent
+import android.view.Menu
 import android.view.View
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.bsuir.notesapp.databinding.ActivityMainBinding
 
@@ -26,11 +28,6 @@ class MainActivity : AppCompatActivity() {
         binding.notesRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.notesRecyclerView.adapter = notesAdapter
 
-//        binding.addButton.setOnClickListener {
-//            val intent = Intent(this, AddNoteActivity::class.java)
-//            startActivity(intent)
-//        }
-
         binding.addButton.setOnClickListener {
             toggleMenu()
         }
@@ -42,7 +39,6 @@ class MainActivity : AppCompatActivity() {
 
         binding.createLabel.setOnClickListener {
             startActivity(Intent(this, AddLabelActivity::class.java))
-//            startActivity(Intent(this, AddNoteActivity::class.java))
             toggleMenu()
         }
     }

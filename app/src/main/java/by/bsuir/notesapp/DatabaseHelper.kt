@@ -229,7 +229,7 @@ class DatabaseHelper(context: Context) :
     /**
      * Добавление новой метки к существующей заметке
      */
-    fun updateNoteLabel(noteId: Int, labelId: Int) {
+    fun updateNoteLabel(noteId: Int, labelId: Int?) {
         val db = writableDatabase
         val values = ContentValues().apply {
             put("label_id", labelId)
