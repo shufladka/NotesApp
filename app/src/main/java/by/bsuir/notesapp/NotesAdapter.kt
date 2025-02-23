@@ -17,7 +17,7 @@ class NotesAdapter(
 ) :
     RecyclerView.Adapter<NotesAdapter.NoteViewHolder>() {
 
-    private val db: NotesDatabaseHelper = NotesDatabaseHelper(context)
+    private val db: DatabaseHelper = DatabaseHelper(context)
 
     class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val titleTextView: TextView = itemView.findViewById(R.id.titleTextView)

@@ -15,7 +15,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/inter"
-        android:text="Note creating"
+        android:text="Создать новую заметку"
         android:textColor="@color/blue"
         android:textSize="24sp" />
 
@@ -25,6 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/addNoteHeading"
         android:layout_alignParentEnd="true"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="20dp"
         android:src="@drawable/baseline_done_24" />
 
@@ -32,7 +33,7 @@
         android:id="@+id/titleEditText"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:hint="Enter the title"
+        android:hint="Введите заголовок"
         android:padding="12dp"
         android:textSize="20sp"
         android:layout_below="@+id/addNoteHeading"
@@ -44,7 +45,7 @@
         android:id="@+id/description_edit_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:hint="Enter note description"
+        android:hint="Введите описание"
         android:gravity="top"
         android:padding="12dp"
         android:textSize="18sp"
