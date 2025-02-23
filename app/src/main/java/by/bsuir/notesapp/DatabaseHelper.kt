@@ -32,7 +32,7 @@ class DatabaseHelper(context: Context) :
             CREATE TABLE $TABLE_LABELS (
                 $COLUMN_NOTE_ID INTEGER PRIMARY KEY AUTOINCREMENT,
                 $COLUMN_LABEL_NAME TEXT,
-                $COLUMN_LABEL_PRIORITY TEXT
+                $COLUMN_LABEL_PRIORITY INTEGER
             )
         """.trimIndent()
 
@@ -83,7 +83,7 @@ class DatabaseHelper(context: Context) :
         while (cursor.moveToNext()) {
             val id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_NOTE_ID))
             val name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_LABEL_NAME))
-            val priority = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_LABEL_PRIORITY))
+            val priority = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_LABEL_PRIORITY))
 
             labels.add(Label(id, name, priority))
         }
@@ -104,7 +104,7 @@ class DatabaseHelper(context: Context) :
         if (cursor.moveToFirst()) {
             val id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_NOTE_ID))
             val name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_LABEL_NAME))
-            val priority = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_LABEL_PRIORITY))
+            val priority = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_LABEL_PRIORITY))
 
             label = Label(id, name, priority)
         }
@@ -156,7 +156,7 @@ class DatabaseHelper(context: Context) :
                 Label(
                     id = cursor.getInt(labelIdIndex),
                     name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_LABEL_NAME)),
-                    priority = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_LABEL_PRIORITY))
+                    priority = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_LABEL_PRIORITY))
                 )
             } else {
                 null
@@ -196,7 +196,7 @@ class DatabaseHelper(context: Context) :
                 Label(
                     id = cursor.getInt(labelIdIndex),
                     name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_LABEL_NAME)),
-                    priority = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_LABEL_PRIORITY))
+                    priority = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_LABEL_PRIORITY))
                 )
             } else {
                 null
@@ -224,6 +224,18 @@ class DatabaseHelper(context: Context) :
         val affectedRows = db.update(TABLE_NOTES, values, "$COLUMN_NOTE_ID = ?", arrayOf(note.id.toString()))
         db.close()
         return affectedRows
+    }
+
+    /**
+     * Добавление новой метки к существующей заметке
+     */
+    fun updateNoteLabel(noteId: Int, labelId: Int) {
+        val db = writableDatabase
+        val values = ContentValues().apply {
+            put("label_id", labelId)
+        }
+        db.update("notes", values, "id=?", arrayOf(noteId.toString()))
+        db.close()
     }
 
     /**

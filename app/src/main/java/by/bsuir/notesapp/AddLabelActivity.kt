@@ -4,11 +4,12 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import by.bsuir.notesapp.databinding.ActivityAddLabelBinding
 import by.bsuir.notesapp.databinding.ActivityAddNoteBinding
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class AddNoteActivity : AppCompatActivity() {
+class AddLabelActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddNoteBinding
     private lateinit var db: DatabaseHelper
@@ -34,10 +35,7 @@ class AddNoteActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val label = Label(0, "TEST", 1)
-            db.insertLabel(label)
-
-            val note = Note(0, title, description, dateTime, label.id)
+            val note = Note(0, title, description, dateTime)
             db.insertNote(note)
             finish()
             ToastProxy.instance.showToast(this, getString(R.string.toast_successful_creation_note))

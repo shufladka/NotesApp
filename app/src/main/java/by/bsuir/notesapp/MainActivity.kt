@@ -7,7 +7,6 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.bsuir.notesapp.databinding.ActivityMainBinding
 
-
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -42,8 +41,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.createLabel.setOnClickListener {
-//            startActivity(Intent(this, AddLabelActivity::class.java))
-            startActivity(Intent(this, AddNoteActivity::class.java))
+            startActivity(Intent(this, AddLabelActivity::class.java))
+//            startActivity(Intent(this, AddNoteActivity::class.java))
             toggleMenu()
         }
     }
@@ -57,13 +56,9 @@ class MainActivity : AppCompatActivity() {
         isMenuVisible = !isMenuVisible
     }
 
-    fun updateUI(note: List<Note>?) {
+    private fun updateUI(note: List<Note>?) {
         if (note != null) {
-            if (note.isNotEmpty()) {
-                binding.notesRecyclerView.visibility = View.VISIBLE
-            } else {
-                binding.notesRecyclerView.visibility = View.GONE
-            }
+            binding.notesRecyclerView.visibility = if (note.isNotEmpty()) View.VISIBLE else View.GONE
         }
     }
 
