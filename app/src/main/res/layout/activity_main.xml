@@ -41,41 +41,6 @@
         app:tint="@color/white"
         android:backgroundTint="@color/green" />
 
-    <LinearLayout
-        android:id="@+id/dropdownMenu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/addButton"
-        android:layout_alignEnd="@id/addButton"
-        android:layout_marginBottom="5dp"
-        android:orientation="vertical"
-        android:visibility="gone"
-        android:elevation="40dp"
-        android:background="@drawable/menu_background">
-
-        <TextView
-            android:id="@+id/createNote"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="12dp"
-            android:text="Создать заметку"
-            android:textSize="16sp"
-            android:textColor="@color/black"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true" />
-
-        <TextView
-            android:id="@+id/createLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="12dp"
-            android:text="Создать текстовую метку"
-            android:textSize="16sp"
-            android:textColor="@color/black"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true" />
-    </LinearLayout>
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addButton"
         android:layout_width="wrap_content"

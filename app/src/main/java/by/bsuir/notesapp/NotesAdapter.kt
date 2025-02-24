@@ -1,8 +1,10 @@
 package by.bsuir.notesapp
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -11,6 +13,8 @@ import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 
@@ -21,6 +25,8 @@ class NotesAdapter(
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val db: DatabaseHelper = DatabaseHelper(context)
+    private var activity: AppCompatActivity = context as AppCompatActivity
+    private var noteForLabelChange: Note? = null
 
     private val NORMAL_VIEW_TYPE = 0
     private val FOOTER_VIEW_TYPE = 1
@@ -98,16 +104,50 @@ class NotesAdapter(
             }
 
             holder.changeLabelButton.setOnClickListener {
-                showLabelMenu(holder, note)
+                noteForLabelChange = note
+                val intent = Intent(holder.itemView.context, AddLabelActivity::class.java)
+                addLabelLauncher.launch(intent)
+
             }
 
             holder.deleteLabelButton.setOnClickListener {
+                db.deleteLabel(note.label!!.id)
                 note.label = null
                 db.updateNote(note)
                 refreshData(db.getAllNotes())
             }
         }
     }
+
+    private val addLabelLauncher = activity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val labelId = result.data?.getIntExtra("label_id", -1) ?: -1
+            noteForLabelChange?.let { note ->
+                if (labelId != -1) {
+                    val newLabel = db.getLabelById(labelId)
+
+                    if (newLabel != null) {
+                        Log.d("NotesAdapter", "Присваиваем метку: ${newLabel.name} (ID: $labelId) для заметки: ${note.title}")
+
+                        note.label = newLabel
+                        db.updateNote(note)
+
+                        val updatedNote = db.getNoteById(note.id)
+                        if (updatedNote?.label?.id == labelId) {
+                            Log.d("NotesAdapter", "Метка успешно обновлена в БД!")
+                        } else {
+                            Log.e("NotesAdapter", "Ошибка обновления метки в БД!")
+                        }
+
+                        refreshData(db.getAllNotes())
+                    } else {
+                        Log.e("NotesAdapter", "Ошибка: не удалось найти метку с ID: $labelId")
+                    }
+                }
+            } ?: Log.e("NotesAdapter", "Ошибка: noteForLabelChange == null")
+        }
+    }
+
 
     private fun showLabelMenu(holder: NoteViewHolder, note: Note) {
         val popupMenu = PopupMenu(holder.itemView.context, holder.changeLabelButton)

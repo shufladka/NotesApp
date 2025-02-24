@@ -29,28 +29,31 @@ class MainActivity : AppCompatActivity() {
         binding.notesRecyclerView.adapter = notesAdapter
 
         binding.addButton.setOnClickListener {
-            toggleMenu()
-        }
-
-        binding.createNote.setOnClickListener {
             startActivity(Intent(this, AddNoteActivity::class.java))
-            toggleMenu()
         }
-
-        binding.createLabel.setOnClickListener {
-            startActivity(Intent(this, AddLabelActivity::class.java))
-            toggleMenu()
-        }
+//        binding.addButton.setOnClickListener {
+//            toggleMenu()
+//        }
+//
+//        binding.createNote.setOnClickListener {
+//            startActivity(Intent(this, AddNoteActivity::class.java))
+//            toggleMenu()
+//        }
+//
+//        binding.createLabel.setOnClickListener {
+//            startActivity(Intent(this, AddLabelActivity::class.java))
+//            toggleMenu()
+//        }
     }
 
-    private fun toggleMenu() {
-        if (isMenuVisible) {
-            binding.dropdownMenu.visibility = View.GONE
-        } else {
-            binding.dropdownMenu.visibility = View.VISIBLE
-        }
-        isMenuVisible = !isMenuVisible
-    }
+//    private fun toggleMenu() {
+//        if (isMenuVisible) {
+//            binding.dropdownMenu.visibility = View.GONE
+//        } else {
+//            binding.dropdownMenu.visibility = View.VISIBLE
+//        }
+//        isMenuVisible = !isMenuVisible
+//    }
 
     private fun updateUI(note: List<Note>?) {
         if (note != null) {

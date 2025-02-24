@@ -30,10 +30,10 @@
         android:src="@drawable/baseline_done_24" />
 
     <EditText
-        android:id="@+id/titleEditText"
+        android:id="@+id/nameText"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:hint="Введите заголовок"
+        android:hint="Введите имя метки"
         android:padding="12dp"
         android:textSize="20sp"
         android:layout_below="@+id/addLabelHeading"
@@ -42,14 +42,15 @@
         android:fontFamily="@font/inter"/>
 
     <EditText
-        android:id="@+id/description_edit_text"
+        android:id="@+id/priorityInt"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:hint="Введите описание"
-        android:gravity="top"
+        android:layout_height="60dp"
+        android:hint="Введите приоритет метки"
+        android:inputType="number"
         android:padding="12dp"
-        android:textSize="18sp"
-        android:fontFamily="@font/inter"
-        android:layout_below="@id/titleEditText"
-        android:layout_marginTop="12dp" />
+        android:textSize="20sp"
+        android:layout_below="@+id/nameText"
+        android:layout_marginTop="16dp"
+        android:maxLines="1"
+        android:fontFamily="@font/inter"/>
     </RelativeLayout>

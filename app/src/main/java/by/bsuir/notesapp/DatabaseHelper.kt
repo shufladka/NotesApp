@@ -14,7 +14,7 @@ class DatabaseHelper(context: Context) :
 
         // Таблица для заметок
         private const val TABLE_NOTES = "notes"
-        private const val COLUMN_NOTE_ID = "id"
+        private const val COLUMN_ID = "id"
         private const val COLUMN_TITLE = "title"
         private const val COLUMN_DESCRIPTION = "description"
         private const val COLUMN_DATETIME = "datetime"
@@ -30,7 +30,7 @@ class DatabaseHelper(context: Context) :
         // Создаем таблицу labels
         val createLabelsTable = """
             CREATE TABLE $TABLE_LABELS (
-                $COLUMN_NOTE_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                $COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT,
                 $COLUMN_LABEL_NAME TEXT,
                 $COLUMN_LABEL_PRIORITY INTEGER
             )
@@ -39,12 +39,12 @@ class DatabaseHelper(context: Context) :
         // Создаем таблицу notes с внешним ключом на labels
         val createNotesTable = """
             CREATE TABLE $TABLE_NOTES (
-                $COLUMN_NOTE_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                $COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT,
                 $COLUMN_TITLE TEXT,
                 $COLUMN_DESCRIPTION TEXT,
                 $COLUMN_DATETIME TEXT,
                 $COLUMN_LABEL_ID INTEGER,
-                FOREIGN KEY ($COLUMN_LABEL_ID) REFERENCES $TABLE_LABELS ($COLUMN_NOTE_ID) ON DELETE SET NULL
+                FOREIGN KEY ($COLUMN_LABEL_ID) REFERENCES $TABLE_LABELS ($COLUMN_ID) ON DELETE SET NULL
             )
         """.trimIndent()
 
@@ -81,7 +81,7 @@ class DatabaseHelper(context: Context) :
         val cursor = db.rawQuery("SELECT * FROM $TABLE_LABELS", null)
 
         while (cursor.moveToNext()) {
-            val id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_NOTE_ID))
+            val id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID))
             val name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_LABEL_NAME))
             val priority = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_LABEL_PRIORITY))
 
@@ -97,12 +97,12 @@ class DatabaseHelper(context: Context) :
      */
     fun getLabelById(labelId: Int): Label? {
         val db = readableDatabase
-        val query = "SELECT * FROM $TABLE_LABELS WHERE $COLUMN_NOTE_ID = ?"
+        val query = "SELECT * FROM $TABLE_LABELS WHERE $COLUMN_ID = ?"
         val cursor = db.rawQuery(query, arrayOf(labelId.toString()))
         var label: Label? = null
 
         if (cursor.moveToFirst()) {
-            val id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_NOTE_ID))
+            val id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID))
             val name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_LABEL_NAME))
             val priority = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_LABEL_PRIORITY))
 
@@ -112,7 +112,6 @@ class DatabaseHelper(context: Context) :
         db.close()
         return label
     }
-
 
     /**
      * Вставка заметки
@@ -137,16 +136,16 @@ class DatabaseHelper(context: Context) :
         val notes = mutableListOf<Note>()
         val db = readableDatabase
         val query = """
-            SELECT n.$COLUMN_NOTE_ID, n.$COLUMN_TITLE, n.$COLUMN_DESCRIPTION, n.$COLUMN_DATETIME,
-                   l.$COLUMN_NOTE_ID AS label_id, l.$COLUMN_LABEL_NAME, l.$COLUMN_LABEL_PRIORITY
+            SELECT n.$COLUMN_ID, n.$COLUMN_TITLE, n.$COLUMN_DESCRIPTION, n.$COLUMN_DATETIME,
+                   l.$COLUMN_ID AS label_id, l.$COLUMN_LABEL_NAME, l.$COLUMN_LABEL_PRIORITY
             FROM $TABLE_NOTES AS n
-            LEFT JOIN $TABLE_LABELS AS l ON n.$COLUMN_LABEL_ID = l.$COLUMN_NOTE_ID
+            LEFT JOIN $TABLE_LABELS AS l ON n.$COLUMN_LABEL_ID = l.$COLUMN_ID
         """.trimIndent()
 
         val cursor = db.rawQuery(query, null)
 
         while (cursor.moveToNext()) {
-            val id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_NOTE_ID))
+            val id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID))
             val title = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TITLE))
             val description = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DESCRIPTION))
             val dateTime = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATETIME))
@@ -175,18 +174,18 @@ class DatabaseHelper(context: Context) :
     fun getNoteById(noteId: Int): Note? {
         val db = readableDatabase
         val query = """
-        SELECT n.$COLUMN_NOTE_ID, n.$COLUMN_TITLE, n.$COLUMN_DESCRIPTION, n.$COLUMN_DATETIME,
-               l.$COLUMN_NOTE_ID AS label_id, l.$COLUMN_LABEL_NAME, l.$COLUMN_LABEL_PRIORITY
+        SELECT n.$COLUMN_ID, n.$COLUMN_TITLE, n.$COLUMN_DESCRIPTION, n.$COLUMN_DATETIME,
+               l.$COLUMN_ID AS label_id, l.$COLUMN_LABEL_NAME, l.$COLUMN_LABEL_PRIORITY
         FROM $TABLE_NOTES AS n
-        LEFT JOIN $TABLE_LABELS AS l ON n.$COLUMN_LABEL_ID = l.$COLUMN_NOTE_ID
-        WHERE n.$COLUMN_NOTE_ID = ?
+        LEFT JOIN $TABLE_LABELS AS l ON n.$COLUMN_LABEL_ID = l.$COLUMN_ID
+        WHERE n.$COLUMN_ID = ?
     """.trimIndent()
 
         val cursor = db.rawQuery(query, arrayOf(noteId.toString()))
         var note: Note? = null
 
         if (cursor.moveToFirst()) {
-            val id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_NOTE_ID))
+            val id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID))
             val title = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TITLE))
             val description = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DESCRIPTION))
             val dateTime = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATETIME))
@@ -221,7 +220,7 @@ class DatabaseHelper(context: Context) :
             put(COLUMN_DATETIME, note.dateTime)
             put(COLUMN_LABEL_ID, note.label?.id)
         }
-        val affectedRows = db.update(TABLE_NOTES, values, "$COLUMN_NOTE_ID = ?", arrayOf(note.id.toString()))
+        val affectedRows = db.update(TABLE_NOTES, values, "$COLUMN_ID = ?", arrayOf(note.id.toString()))
         db.close()
         return affectedRows
     }
@@ -243,7 +242,7 @@ class DatabaseHelper(context: Context) :
      */
     fun deleteNote(noteId: Int) {
         val db = writableDatabase
-        db.delete(TABLE_NOTES, "$COLUMN_NOTE_ID = ?", arrayOf(noteId.toString()))
+        db.delete(TABLE_NOTES, "$COLUMN_ID = ?", arrayOf(noteId.toString()))
         db.close()
     }
 
@@ -252,7 +251,7 @@ class DatabaseHelper(context: Context) :
      */
     fun deleteLabel(labelId: Int) {
         val db = writableDatabase
-        db.delete(TABLE_LABELS, "$COLUMN_NOTE_ID = ?", arrayOf(labelId.toString()))
+        db.delete(TABLE_LABELS, "$COLUMN_ID = ?", arrayOf(labelId.toString()))
         db.close()
     }
 }

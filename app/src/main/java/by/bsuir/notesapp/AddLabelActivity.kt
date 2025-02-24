@@ -1,44 +1,43 @@
 package by.bsuir.notesapp
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import by.bsuir.notesapp.databinding.ActivityAddLabelBinding
-import by.bsuir.notesapp.databinding.ActivityAddNoteBinding
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 class AddLabelActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityAddNoteBinding
+    private lateinit var binding: ActivityAddLabelBinding
     private lateinit var db: DatabaseHelper
 
     @SuppressLint("VisibleForTests")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = ActivityAddNoteBinding.inflate(layoutInflater)
+        binding = ActivityAddLabelBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         db = DatabaseHelper(this)
 
         binding.saveButton.setOnClickListener {
-            val title = binding.titleEditText.text.toString()
-            val description = binding.descriptionEditText.text.toString()
+            val name = binding.nameText.text.toString()
+            val priority = binding.priorityInt.text.toString().toInt()
 
-            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
-            val dateTime = LocalDateTime.now().format(formatter).toString()
+            val labelId = db.insertLabel(Label(0, name, priority))
 
-            if (title.isBlank() || description.isBlank()) {
-                ToastProxy.instance.showToast(this, getString(R.string.toast_error_creation_note))
-                return@setOnClickListener
+            if (labelId != -1L) { // Проверяем, что метка действительно добавлена
+                val resultIntent = Intent().apply {
+                    putExtra("label_id", labelId.toInt()) // Приводим к Int
+                }
+                setResult(RESULT_OK, resultIntent)
+            } else {
+                ToastProxy.instance.showToast(this, "Ошибка при сохранении метки").show()
+                setResult(RESULT_CANCELED)
             }
-
-            val note = Note(0, title, description, dateTime)
-            db.insertNote(note)
             finish()
-            ToastProxy.instance.showToast(this, getString(R.string.toast_successful_creation_note))
+            ToastProxy.instance.showToast(this, labelId.toString())
                 .show()
         }
     }
