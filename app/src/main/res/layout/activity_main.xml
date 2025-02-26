@@ -14,7 +14,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/inter"
-        android:text="Notes"
+        android:text="Мои заметки"
         android:layout_marginStart="18dp"
         android:textColor="@color/blue"
         android:textSize="24sp" />
@@ -23,8 +23,117 @@
         android:id="@+id/notesRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="50dp"
-        android:padding="8dp" />
+        android:layout_marginTop="56dp"
+        android:padding="8dp"
+        android:clipToPadding="false" />
+
+    <LinearLayout
+        android:id="@+id/dropdownMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/sortButton"
+        android:layout_alignEnd="@id/sortButton"
+        android:layout_marginBottom="4dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:elevation="40dp"
+        android:background="@drawable/menu_background">
+
+        <LinearLayout
+            android:id="@+id/disableSortContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true">
+
+            <CheckBox
+                android:id="@+id/disableSortCheck"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/blue"
+                android:focusable="false"
+                android:clickable="false"/>
+
+            <TextView
+                android:id="@+id/disableSort"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:text="Обычный порядок"
+                android:textSize="16sp"
+                android:textColor="@color/black"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/directSortContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true">
+
+            <CheckBox
+                android:id="@+id/directSortCheck"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/blue"
+                android:focusable="false"
+                android:clickable="false"/>
+
+            <TextView
+                android:id="@+id/directSort"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:text="Сортировать по возрастанию"
+                android:textSize="16sp"
+                android:textColor="@color/black"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/reverseSortContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true">
+
+            <CheckBox
+                android:id="@+id/reverseSortCheck"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/blue"
+                android:focusable="false"
+                android:clickable="false"/>
+
+            <TextView
+                android:id="@+id/reverseSort"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:text="Сортировать по убыванию"
+                android:textSize="16sp"
+                android:textColor="@color/black"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/sortButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="80dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/baseline_sort_24"
+        app:tint="@color/white"
+        android:backgroundTint="@color/green" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addButton"
@@ -34,8 +143,6 @@
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:src="@drawable/baseline_add_24"
         app:tint="@color/white"
         android:backgroundTint="@color/blue" />

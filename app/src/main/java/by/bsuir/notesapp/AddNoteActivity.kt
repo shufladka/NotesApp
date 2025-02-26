@@ -11,7 +11,7 @@ import java.time.format.DateTimeFormatter
 class AddNoteActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddNoteBinding
-    private lateinit var db: NotesDatabaseHelper
+    private lateinit var db: DatabaseHelper
 
     @SuppressLint("VisibleForTests")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,7 +20,7 @@ class AddNoteActivity : AppCompatActivity() {
         binding = ActivityAddNoteBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        db = NotesDatabaseHelper(this)
+        db = DatabaseHelper(this)
 
         binding.saveButton.setOnClickListener {
             val title = binding.titleEditText.text.toString()

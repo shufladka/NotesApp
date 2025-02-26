@@ -19,6 +19,9 @@
             android:name=".AddNoteActivity"
             android:exported="false" />
         <activity
+            android:name=".AddLabelActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
