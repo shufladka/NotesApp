@@ -33,11 +33,6 @@ class AddNoteActivity : AppCompatActivity() {
                 ToastProxy.instance.showToast(this, getString(R.string.toast_error_creation_note))
                 return@setOnClickListener
             }
-//
-//            val label1 = Label(0, "TEST1", 1)
-//            db.insertLabel(label1)
-//            val label2 = Label(1, "TEST2", 2)
-//            db.insertLabel(label2)
 
             val note = Note(0, title, description, dateTime)
             db.insertNote(note)

@@ -39,9 +39,12 @@ class UpdateNoteActivity : AppCompatActivity() {
             val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
             val dateTime = LocalDateTime.now().format(formatter).toString()
 
-            val labelId = note?.id?.let { id -> db.getLabelById(id) }
+            val updateNote = Note(noteId, title, description, dateTime)
 
-            val updateNote = Note(noteId, title, description, dateTime, labelId)
+            if (note?.label != null) {
+                updateNote.label = note.label
+            }
+
             db.updateNote(updateNote)
             finish()
             ToastProxy.instance.showToast(this, getString(R.string.toast_changes_note))

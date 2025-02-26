@@ -1,8 +1,9 @@
 <resources>
-    <string name="app_name">NotesApp</string>
-    <string name="toast_missing_content">Please enter Title and Content</string>
-    <string name="toast_error_creation_note">Please enter Title and Content</string>
-    <string name="toast_successful_creation_note">Note Saved</string>
-    <string name="toast_deleted_note">Note Deleted</string>
-    <string name="toast_changes_note">Changes Saved</string>
+    <string name="app_name">Мои заметки</string>
+    <string name="toast_missing_content">Введите заголовок и содержимое заметки</string>
+    <string name="toast_error_creation_note">Пропущен заголовок или содержимое заметки</string>
+    <string name="toast_error_creation_label">Пропущено имя или приоритет метки</string>
+    <string name="toast_successful_creation_note">Заметка сохранена</string>
+    <string name="toast_deleted_note">Заметка удалена</string>
+    <string name="toast_changes_note">Заметка изменена</string>
 </resources>

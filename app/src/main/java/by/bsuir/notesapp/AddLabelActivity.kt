@@ -23,9 +23,14 @@ class AddLabelActivity : AppCompatActivity() {
 
         binding.saveButton.setOnClickListener {
             val name = binding.nameText.text.toString()
-            val priority = binding.priorityInt.text.toString().toInt()
+            val priority = binding.priorityInt.text.toString()
 
-            val labelId = db.insertLabel(Label(0, name, priority))
+            if (title.isBlank() || priority.isBlank() ) {
+                ToastProxy.instance.showToast(this, getString(R.string.toast_error_creation_label))
+                return@setOnClickListener
+            }
+
+            val labelId = db.insertLabel(Label(0, name, priority.toInt()))
 
             if (labelId != -1L) { // Проверяем, что метка действительно добавлена
                 val resultIntent = Intent().apply {
