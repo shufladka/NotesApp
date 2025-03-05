@@ -1,4 +1,4 @@
-package by.bsuir.notesapp
+package by.bsuir.notesapp.toast
 
 import android.content.Context
 import android.widget.Toast
@@ -22,18 +22,4 @@ class ToastProxyImpl : ToastProxy {
 
     }
 
-}
-
-class CachingToastProxy(private val inner: ToastProxy) : ToastProxy {
-    internal var shownToastsText: Array<String> = arrayOf()
-
-    override fun showToast(context: Context, text: String): Toast {
-        val toast = inner.showToast(context, text)
-        shownToastsText += text
-        return toast
-    }
-
-    fun clear() {
-        shownToastsText = arrayOf()
-    }
 }

@@ -1,9 +1,13 @@
-package by.bsuir.notesapp
+package by.bsuir.notesapp.activity
 
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import by.bsuir.notesapp.database.DatabaseHelper
+import by.bsuir.notesapp.entity.Note
+import by.bsuir.notesapp.R
+import by.bsuir.notesapp.toast.ToastProxy
 import by.bsuir.notesapp.databinding.ActivityAddNoteBinding
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -11,7 +15,7 @@ import java.time.format.DateTimeFormatter
 class AddNoteActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddNoteBinding
-    private lateinit var db: DatabaseHelper
+    private lateinit var databaseHelper: DatabaseHelper
 
     @SuppressLint("VisibleForTests")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,7 +24,7 @@ class AddNoteActivity : AppCompatActivity() {
         binding = ActivityAddNoteBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        db = DatabaseHelper(this)
+        databaseHelper = DatabaseHelper(this)
 
         binding.saveButton.setOnClickListener {
             val title = binding.titleEditText.text.toString()
@@ -35,10 +39,8 @@ class AddNoteActivity : AppCompatActivity() {
             }
 
             val note = Note(0, title, description, dateTime)
-            db.insertNote(note)
+            databaseHelper.insertNote(note)
             finish()
-            ToastProxy.instance.showToast(this, getString(R.string.toast_successful_creation_note))
-                .show()
         }
     }
 }

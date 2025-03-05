@@ -13,13 +13,13 @@
         android:theme="@style/Theme.NotesApp"
         tools:targetApi="31">
         <activity
-            android:name=".UpdateNoteActivity"
+            android:name=".activity.UpdateNoteActivity"
             android:exported="false" />
         <activity
-            android:name=".AddNoteActivity"
+            android:name=".activity.AddNoteActivity"
             android:exported="false" />
         <activity
-            android:name=".AddLabelActivity"
+            android:name=".activity.AddLabelActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

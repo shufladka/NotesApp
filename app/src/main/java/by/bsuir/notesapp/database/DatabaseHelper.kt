@@ -1,9 +1,11 @@
-package by.bsuir.notesapp
+package by.bsuir.notesapp.database
 
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import by.bsuir.notesapp.entity.Label
+import by.bsuir.notesapp.entity.Note
 
 class DatabaseHelper(context: Context) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, SCHEMA) {
@@ -70,26 +72,6 @@ class DatabaseHelper(context: Context) :
         val id = db.insert(TABLE_LABELS, null, values)
         db.close()
         return id
-    }
-
-    /**
-     * Получение всех меток
-     */
-    fun getAllLabels(): List<Label> {
-        val labels = mutableListOf<Label>()
-        val db = readableDatabase
-        val cursor = db.rawQuery("SELECT * FROM $TABLE_LABELS", null)
-
-        while (cursor.moveToNext()) {
-            val id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID))
-            val name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_LABEL_NAME))
-            val priority = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_LABEL_PRIORITY))
-
-            labels.add(Label(id, name, priority))
-        }
-        cursor.close()
-        db.close()
-        return labels
     }
 
     /**
@@ -223,18 +205,6 @@ class DatabaseHelper(context: Context) :
         val affectedRows = db.update(TABLE_NOTES, values, "$COLUMN_ID = ?", arrayOf(note.id.toString()))
         db.close()
         return affectedRows
-    }
-
-    /**
-     * Добавление новой метки к существующей заметке
-     */
-    fun updateNoteLabel(noteId: Int, labelId: Int?) {
-        val db = writableDatabase
-        val values = ContentValues().apply {
-            put("label_id", labelId)
-        }
-        db.update("notes", values, "id=?", arrayOf(noteId.toString()))
-        db.close()
     }
 
     /**

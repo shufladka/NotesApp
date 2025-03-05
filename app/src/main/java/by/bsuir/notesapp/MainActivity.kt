@@ -3,20 +3,21 @@ package by.bsuir.notesapp
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.content.Intent
-import android.graphics.Color
-import android.view.Menu
 import android.view.View
 import android.widget.CheckBox
-import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
+import by.bsuir.notesapp.activity.AddNoteActivity
+import by.bsuir.notesapp.adapter.NotesAdapter
+import by.bsuir.notesapp.database.DatabaseHelper
 import by.bsuir.notesapp.databinding.ActivityMainBinding
+import by.bsuir.notesapp.entity.Note
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var db: DatabaseHelper
+    private lateinit var databaseHelper: DatabaseHelper
     private lateinit var notesAdapter: NotesAdapter
-    private var selectedCheckBox: CheckBox? = null // Хранит активный чекбокс
+    private var selectedCheckBox: CheckBox? = null
     private var isMenuVisible = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,16 +25,18 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        db = DatabaseHelper(this)
+        databaseHelper = DatabaseHelper(this)
 
-        notesAdapter =
-            NotesAdapter(db.getAllNotes(), this, onDelete = { updateUI(db.getAllNotes()) })
+        notesAdapter = NotesAdapter(
+            databaseHelper.getAllNotes(),
+            this,
+            onDelete = { updateUI(databaseHelper.getAllNotes()) })
 
         // Устанавливаем сортировку по умолчанию
         setActiveSort(binding.disableSortCheck)
         updateNotesList()
 
-        // Обработчики нажатий на контейнеры (чтобы работало нажатие не только по тексту, но и по всей строке)
+        // Обработчики нажатий на контейнеры
         binding.disableSortContainer.setOnClickListener {
             setActiveSort(binding.disableSortCheck)
             updateNotesList()
@@ -74,18 +77,22 @@ class MainActivity : AppCompatActivity() {
         isMenuVisible = !isMenuVisible
     }
 
-    // Функция обновления списка заметок
+    // Обновление списка заметок
     private fun updateNotesList(sortFunction: ((List<Note>) -> List<Note>)? = null) {
-        var notes = db.getAllNotes()
+        var notes = databaseHelper.getAllNotes()
         notes = sortFunction?.invoke(notes) ?: notes
         notesAdapter.refreshData(notes)
         updateUI(notes)
     }
 
-    // Устанавливаем активную сортировку
+    // Устанавка активной сортировки
     private fun setActiveSort(checkBox: CheckBox) {
-        selectedCheckBox?.isChecked = false // Сбрасываем предыдущий чекбокс
-        checkBox.isChecked = true // Выбираем новый
+
+        // Сбрасываем предыдущий чекбокс
+        selectedCheckBox?.isChecked = false
+
+        // Выбираем новый чекбокс
+        checkBox.isChecked = true
         selectedCheckBox = checkBox
     }
 
@@ -97,7 +104,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        val note = db.getAllNotes()
+        val note = databaseHelper.getAllNotes()
         notesAdapter.refreshData(note)
         updateUI(note)
     }
