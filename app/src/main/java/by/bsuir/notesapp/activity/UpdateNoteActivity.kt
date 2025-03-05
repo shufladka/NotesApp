@@ -1,8 +1,10 @@
-package by.bsuir.notesapp
+package by.bsuir.notesapp.activity
 
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import by.bsuir.notesapp.database.DatabaseHelper
+import by.bsuir.notesapp.entity.Note
 import by.bsuir.notesapp.databinding.ActivityUpdateNoteBinding
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -10,7 +12,7 @@ import java.time.format.DateTimeFormatter
 class UpdateNoteActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityUpdateNoteBinding
-    private lateinit var db: DatabaseHelper
+    private lateinit var databaseHelper: DatabaseHelper
     private var noteId: Int = -1
 
     @SuppressLint("VisibleForTests")
@@ -19,7 +21,7 @@ class UpdateNoteActivity : AppCompatActivity() {
         binding = ActivityUpdateNoteBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        db = DatabaseHelper(this)
+        databaseHelper = DatabaseHelper(this)
 
         noteId = intent.getIntExtra("note_id", -1)
         if (noteId == -1) {
@@ -27,7 +29,7 @@ class UpdateNoteActivity : AppCompatActivity() {
             return
         }
 
-        val note = db.getNoteById(noteId)
+        val note = databaseHelper.getNoteById(noteId)
 
         binding.updateTitleEditText.setText(note?.title)
         binding.updateContentEditText.setText(note?.description)
@@ -45,9 +47,8 @@ class UpdateNoteActivity : AppCompatActivity() {
                 updateNote.label = note.label
             }
 
-            db.updateNote(updateNote)
+            databaseHelper.updateNote(updateNote)
             finish()
-            ToastProxy.instance.showToast(this, getString(R.string.toast_changes_note))
         }
     }
 }
